@@ -2,7 +2,7 @@
 	#endinput
 #endif
 #define _INC_FIX_SCOPE
-
+#include <a_samp>
 #if !defined CHAIN_FORWARD
 	#define CHAIN_FORWARD:%0_%2(%1)=%3; \
 		forward %0_%2(%1); \
@@ -129,3 +129,32 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 #endif
 #define OnPlayerKeyStateChange(%0) CHAIN_PUBLIC:FS_OnPlayerKeyStateChange(%0)
 CHAIN_FORWARD:FS_OnPlayerKeyStateChange(playerid, newkeys, oldkeys) = 1;
+
+public OnPlayerConnect(playerid)
+{
+	for (new index; index < MAX_PLAYER_ATTACHED_OBJECTS; index++) //Loop all slots
+		 
+		FS_AttachData[playerid][index][fs_offsetX] = 
+		FS_AttachData[playerid][index][fs_offsetY] = 
+		FS_AttachData[playerid][index][fs_offsetZ] = 
+		FS_AttachData[playerid][index][fs_rotX] = 
+		FS_AttachData[playerid][index][fs_rotY] = 
+		FS_AttachData[playerid][index][fs_rotZ] = 
+		FS_AttachData[playerid][index][fs_scaleX] = 
+		FS_AttachData[playerid][index][fs_scaleY] = 
+		FS_AttachData[playerid][index][fs_scaleZ] = 
+		FS_AttachData[playerid][index][fs_materialcolor1] = 
+		FS_AttachData[playerid][index][fs_materialcolor2] = 
+		FS_AttachData[playerid][index][fs_index] = 
+		FS_AttachData[playerid][index][fs_modelid] = 
+		FS_AttachData[playerid][index][fs_bone]  = -1;
+
+	return FS_OnPlayerConnect(playerid);
+}
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
+#define OnPlayerConnect(%0) CHAIN_PUBLIC:FS_OnPlayerConnect(%0)
+CHAIN_FORWARD:FS_OnPlayerConnect(playerid) = 1;
