@@ -3,12 +3,6 @@
 #endif
 #define _INC_FIX_SCOPE
 #include <a_samp>
-#if !defined CHAIN_FORWARD
-	#define CHAIN_FORWARD:%0_%2(%1)=%3; \
-		forward %0_%2(%1); \
-		public %0_%2(%1) <_ALS : _ALS_x0, _ALS : _ALS_x1> { return (%3); } \
-		public %0_%2(%1) <> { return (%3); }
-#endif	
 
 #if !defined PRESSING
 	#define PRESSING(%0,%1) (%0 & (%1))
@@ -91,19 +85,19 @@ stock FS_SetPlayerAttachedObject(playerid, index, modelid, bone, Float:fOffsetX 
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	if (PRESSING(newkeys, KEY_HANDBRAKE)) { //RMB (Right Mouse Button)
-		if (GetPlayerWeapon(playerid) == 34) { //Weapon Sniper Rifle
-	    	for (new index; index < MAX_PLAYER_ATTACHED_OBJECTS; index++) { //Loop all slots
-	        	if (IsPlayerAttachedObjectSlotUsed(playerid, index)) {
-	        	   FS_RemovePlayerAttachedObject(playerid, index);
-	        	}
-	        }	
+		if (WEAPON_SNIPER <= GetPlayerWeapon(playerid) <= WEAPON_HEATSEEKER) { //Weapons
+			for (new index; index < MAX_PLAYER_ATTACHED_OBJECTS; index++) { //Loop all slots
+				if (IsPlayerAttachedObjectSlotUsed(playerid, index)) {
+					FS_RemovePlayerAttachedObject(playerid, index);
+				}
+			}	
 		}
 	}
 	else if (RELEASED(KEY_HANDBRAKE)) { //RMB (Right Mouse Button)
-	    if (GetPlayerWeapon(playerid) == 34) { //Weapon Sniper Rifle
-	    	for (new index; index < MAX_PLAYER_ATTACHED_OBJECTS; index++) { //Loop all slots	    		
-	    		SetPlayerAttachedObject(playerid, 
-	    		FS_AttachData[playerid][index][fs_index],
+		if (WEAPON_SNIPER <= GetPlayerWeapon(playerid) <= WEAPON_HEATSEEKER) { //Weapon
+			for (new index; index < MAX_PLAYER_ATTACHED_OBJECTS; index++) { //Loop all slots	    		
+				SetPlayerAttachedObject(playerid, 
+				FS_AttachData[playerid][index][fs_index],
 				FS_AttachData[playerid][index][fs_modelid],
 				FS_AttachData[playerid][index][fs_bone],
 				FS_AttachData[playerid][index][fs_offsetX],
@@ -117,23 +111,18 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				FS_AttachData[playerid][index][fs_scaleZ],
 				FS_AttachData[playerid][index][fs_materialcolor1],
 				FS_AttachData[playerid][index][fs_materialcolor2]);
-	        }
-	    }
+			}
+		}
 	}
+#if defined FS_OnPlayerKeyStateChange
 	return FS_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-}
-#if defined _ALS_OnPlayerKeyStateChange
-	#undef OnPlayerKeyStateChange
 #else
-	#define _ALS_OnPlayerKeyStateChange
+	return true;
 #endif
-#define OnPlayerKeyStateChange(%0) CHAIN_PUBLIC:FS_OnPlayerKeyStateChange(%0)
-CHAIN_FORWARD:FS_OnPlayerKeyStateChange(playerid, newkeys, oldkeys) = 1;
-
+}
 public OnPlayerConnect(playerid)
 {
 	for (new index; index < MAX_PLAYER_ATTACHED_OBJECTS; index++) //Loop all slots
-		 
 		FS_AttachData[playerid][index][fs_offsetX] = 
 		FS_AttachData[playerid][index][fs_offsetY] = 
 		FS_AttachData[playerid][index][fs_offsetZ] = 
@@ -148,13 +137,29 @@ public OnPlayerConnect(playerid)
 		FS_AttachData[playerid][index][fs_index] = 
 		FS_AttachData[playerid][index][fs_modelid] = 
 		FS_AttachData[playerid][index][fs_bone]  = -1;
-
+#if defined FS_OnPlayerConnect
 	return FS_OnPlayerConnect(playerid);
+#else
+	return true;
+#endif
 }
+//ALS HOOKS
 #if defined _ALS_OnPlayerConnect
 	#undef OnPlayerConnect
 #else
 	#define _ALS_OnPlayerConnect
 #endif
-#define OnPlayerConnect(%0) CHAIN_PUBLIC:FS_OnPlayerConnect(%0)
-CHAIN_FORWARD:FS_OnPlayerConnect(playerid) = 1;
+#define OnPlayerConnect FS_OnPlayerConnect
+#if defined FS_OnPlayerConnect
+	forward FS_OnPlayerConnect(playerid);
+#endif
+
+#if defined _ALS_OnPlayerKeyStateChange
+	#undef OnPlayerKeyStateChange
+#else
+	#define _ALS_OnPlayerKeyStateChange
+#endif
+#define OnPlayerKeyStateChange FS_OnPlayerKeyStateChange
+#if defined FS_OnPlayerKeyStateChange
+	forward FS_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+#endif
