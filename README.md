@@ -1,5 +1,5 @@
 # include-scope-fix
-Fix SAMP Attach objects Bug while Aiming with Sniper (34)
+Fix SAMP Attach objects Bug while Aiming with Sniper (34), RPG (35) and HS Rocket (36)
 
 
 <div align="center">
