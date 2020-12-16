@@ -1,0 +1,12 @@
+{
+	"user": "zile42O",
+	"repo": "include-scope-fix",
+	"entry": "test.pwn",
+	"output": "test.amx",
+	"dependencies": [
+		"sampctl/samp-stdlib"
+	],
+	"runtime": {
+		"mode": "y_testing"
+	}
+}
