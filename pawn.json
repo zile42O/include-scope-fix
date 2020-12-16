@@ -1,8 +1,8 @@
 {
 	"user": "zile42O",
 	"repo": "include-scope-fix",
-	"entry": "scope-fix.inc",
-	"output": "scope-fix.amx",
+	"entry": "test.pwn",
+	"output": "test.amx",
 	"dependencies": [
 		"sampctl/samp-stdlib"
 	]
