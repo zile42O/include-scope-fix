@@ -1,3 +1,5 @@
+[![sampctl](https://img.shields.io/badge/sampctl-scope--fix-2f2f2f.svg?style=for-the-badge)](https://github.com/zile42O/include-scope-fix)
+
 # include-scope-fix
 Fix SAMP Attach objects Bug while Aiming with Sniper (34), RPG (35) and HS Rocket (36)
 
