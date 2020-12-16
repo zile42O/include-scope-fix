@@ -1,12 +1,9 @@
 {
 	"user": "zile42O",
 	"repo": "include-scope-fix",
-	"entry": "test.pwn",
-	"output": "test.amx",
+	"entry": "scope-fix.inc",
+	"output": "scope-fix.amx",
 	"dependencies": [
 		"sampctl/samp-stdlib"
-	],
-	"runtime": {
-		"mode": "y_testing"
-	}
+	]
 }
